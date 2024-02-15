@@ -32,9 +32,9 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class FileSystemStorageService implements StorageService {
+public class GitStorageService implements StorageService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(FileSystemStorageService.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(GitStorageService.class);
 
 	private final Path rootLocation;
 	private final String remoteUrl;
@@ -45,7 +45,7 @@ public class FileSystemStorageService implements StorageService {
     private Git git;
 
 	@Autowired
-	public FileSystemStorageService(StorageProperties properties) {
+	public GitStorageService(StorageProperties properties) {
         if(properties.getLocation().trim().length() == 0){
             throw new StorageException("File upload location can not be Empty."); 
 		}

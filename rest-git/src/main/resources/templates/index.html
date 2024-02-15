@@ -1,43 +1,53 @@
-<h3>Upload Form</h3>
-<form id="upform" enctype="multipart/form-data">
-    <input type="file" name="file" size="50" />
-    <button id="upButton" type="button">Upload It</button>
-</form>
-<h3>Commit</h3>
-<form id="commitform">
-    <input type="text" name="message" />
-    <button id="commitButton" type="button">Commit</button>
-</form>
-<script src="//code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script>
-    $("#upButton").on('click', function () {
-        console.log("upButton clicked.");
-        let data = new FormData($("#upform").get(0));
-        $.ajax({
-            url:'git',
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            method: 'POST',
-            success: function(data){
-                console.log(data);
-            }
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+</head>
+<body>
+    <h3>Upload Form</h3>
+    <form id="upform" enctype="multipart/form-data">
+        <input type="file" name="files" size="50" />
+        <button id="upButton" type="button">Upload It</button>
+    </form>
+    <h3>Commit</h3>
+    <form id="commitform">
+        <input type="text" name="commit" />
+        <button id="commitButton" type="button">Commit</button>
+    </form>
+    <script src="//code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $("#upButton").on('click', function () {
+            console.log("upButton clicked.");
+            let data = new FormData($("#upform").get(0));
+            $.ajax({
+                url:'api/git',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                success: function(data){
+                    console.log(data);
+                }
+            });
         });
-    });
-    $("#commitButton").on('click', function () {
-        console.log("commitButton clicked.");
-        let data = new FormData($("#commitform").get(0));
-        $.ajax({
-            url:'git/commit',
-            data: data,
-            cache: false,
-            contentType: false,
-            processData: false,
-            method: 'POST',
-            success: function(data){
-                console.log(data);
-            }
+        $("#commitButton").on('click', function () {
+            console.log("commitButton clicked.");
+            let data = new FormData($("#commitform").get(0));
+            $.ajax({
+                url:'api/git/commit',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                success: function(data){
+                    console.log(data);
+                }
+            });
         });
-    });
-</script>
+    </script>
+</body>
+</html>

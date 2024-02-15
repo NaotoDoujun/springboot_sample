@@ -1,0 +1,100 @@
+version: '3.6'
+
+services:
+  db-local:
+    image: postgres
+    container_name: db-local-for-spring
+    privileged: true
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports: 
+      - 5432:5432
+    volumes:
+      - ../db_init/initialize-database.js:/docker-entrypoint-initdb.d/1-init-db.js
+    restart: unless-stopped
+
+  gitlab-local:
+    image: gitlab/gitlab-ce:16.8.2-ce.0
+    container_name: gitlab-local-for-spring
+    privileged: true
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://localhost:8000'
+        registry_external_url 'http://localhost:5050'
+        gitlab_rails['registry_enabled'] = true
+        gitlab_rails['time_zone'] = "Asia/Tokyo"
+        gitlab_rails['initial_root_password'] = "P@ssw0rd"
+        nginx['listen_port'] = 8000
+        puma['worker_processes'] = 1
+        postgresql['shared_buffers'] = "1024MB"
+        mattermost['enable'] = false
+        prometheus['enable'] = false
+        alertmanager['enable'] = false
+        node_exporter['enable'] = false
+        redis_exporter['enable'] = false
+        postgres_exporter['enable'] = false
+        gitlab_exporter['enable'] = false
+        grafana['enable'] = false
+    volumes:
+      - gitlab-local_config:/etc/gitlab
+      - gitlab-local_logs:/var/log/gitlab
+      - gitlab-local_data:/var/opt/gitlab
+    logging:
+      options:
+        max-size: "4M"
+        max-file: "14"
+    ports:
+      - 8000:8000
+      - 5050:5050
+    restart: unless-stopped
+
+  rest-db-jvm:
+    image: docker.io/springboot/rest-db-jvm:latest
+    container_name: spring-rest-db-jvm
+    depends_on:
+      - db-local
+    ports:
+      - 8081:8081
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-local:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    restart: "no"
+    networks:
+      default:
+        aliases:
+          - rest-db-jvm
+
+  rest-git-jvm:
+    image: docker.io/springboot/rest-git-jvm:latest
+    container_name: spring-rest-git-jvm
+    depends_on:
+      - gitlab-local
+    ports:
+      - 8082:8082
+    restart: "no"
+    networks:
+      default:
+        aliases:
+          - rest-git-jvm
+
+  ui-frontend-jvm:
+    image: docker.io/springboot/ui-frontend-jvm:latest
+    container_name: spring-ui-frontend-jvm
+    ports:
+      - 8080:8080
+    restart: "no"
+    environment:
+      API_BASE_URL: http://localhost:8083
+
+volumes:
+  gitlab-local_config:
+    driver: local
+  gitlab-local_logs:
+    driver: local
+  gitlab-local_data:
+    driver: local
+  rest_git_volume:
+    driver: local

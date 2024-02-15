@@ -1,0 +1,85 @@
+version: '3.6'
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres-for-spring
+    hostname: postgres
+    privileged: true
+    env_file: .env
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+    ports: 
+      - 5432:5432
+    restart: unless-stopped
+
+  rest-db:
+    container_name: spring-rest-db
+    hostname: rest-db
+    tty: true
+    privileged: true
+    env_file: .env
+    build:
+      context: .devcontainer/docker
+      dockerfile: dockerfile
+      args:
+        - SPRINGBOOT_VERSION=${SPRINGBOOT_VERSION}
+        - WORK_DIR=${WORK_DIR}
+    volumes:
+      - .:/app:cached
+    restart: "no"
+
+  rest-git:
+    container_name: spring-rest-git
+    hostname: rest-git
+    tty: true
+    privileged: true
+    env_file: .env
+    build:
+      context: .devcontainer/docker
+      dockerfile: dockerfile
+      args:
+        - SPRINGBOOT_VERSION=${SPRINGBOOT_VERSION}
+        - WORK_DIR=${WORK_DIR}
+    volumes:
+      - .:/app:cached
+      - restgit_volume:/var/git
+    restart: "no"
+
+  rest-backend:
+    container_name: spring-rest-backend
+    hostname: rest-backend
+    tty: true
+    privileged: true
+    env_file: .env
+    build:
+      context: .devcontainer/docker
+      dockerfile: dockerfile
+      args:
+        - SPRINGBOOT_VERSION=${SPRINGBOOT_VERSION}
+        - WORK_DIR=${WORK_DIR}
+    volumes:
+      - .:/app:cached
+    restart: "no"
+
+  ui-frontend:
+    container_name: spring-ui-frontend
+    hostname: ui-frontend
+    tty: true
+    privileged: true
+    env_file: .env
+    build:
+      context: .devcontainer/docker
+      dockerfile: dockerfile
+      args:
+        - SPRINGBOOT_VERSION=${SPRINGBOOT_VERSION}
+        - WORK_DIR=${WORK_DIR}
+    volumes:
+      - .:/app:cached
+    restart: "no"
+
+volumes:
+  restgit_volume:
+    driver: local
+  postgres_volume:
+    driver: local

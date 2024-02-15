@@ -1,0 +1,17 @@
+FROM ghcr.io/graalvm/native-image:muslib-ol8-java17
+
+ARG SPRINGBOOT_VERSION
+
+# dirs
+ARG WORK_DIR
+
+RUN microdnf install -y wget zip unzip vim git curl iputils
+
+# SpringBoot CLI
+RUN mkdir /opt/springboot && \
+    wget --no-check-certificate --no-cookies -O - "https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-cli/${SPRINGBOOT_VERSION}/spring-boot-cli-${SPRINGBOOT_VERSION}-bin.tar.gz" | \
+    tar -zxC ${WORK_DIR} && \
+    mv -fu ${WORK_DIR}/spring-${SPRINGBOOT_VERSION}/* /opt/springboot
+ENV PATH $PATH:/opt/springboot/bin
+
+ENTRYPOINT ["/bin/sh"]

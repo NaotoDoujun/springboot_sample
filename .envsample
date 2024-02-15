@@ -1,0 +1,8 @@
+# versions
+SPRINGBOOT_VERSION=3.2.2
+
+# dirs
+WORK_DIR=/tmp
+
+# postgres
+POSTGRES_PASSWORD=postgres

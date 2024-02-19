@@ -8,7 +8,7 @@ api:
 
 spring:
   application:
-    name: ui-springboot
+    name: ui-frontend
   profiles:
     active: dev
   security:
@@ -35,4 +35,4 @@ management:
     tags:
       app: ${spring.application.name}
       application: ${spring.application.name}
-      system: quarkus-sample
+      system: springboot-sample

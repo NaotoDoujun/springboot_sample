@@ -1,0 +1,26 @@
+server:
+  port: 8083
+  address: 0.0.0.0
+
+spring:
+  application:
+    name: rest-backend
+  profiles:
+    active: dev
+
+rest:
+  db:
+    endpoint: http://rest-db-jvm:8081
+  git:
+    endpoint: http://rest-git-jvm:8082
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    tags:
+      app: ${spring.application.name}
+      application: ${spring.application.name}
+      system: springboot-sample

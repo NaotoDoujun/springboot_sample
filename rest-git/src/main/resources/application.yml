@@ -1,0 +1,25 @@
+server:
+  port: 8082
+  address: 0.0.0.0
+
+spring:
+  application:
+    name: rest-git
+  profiles:
+    active: dev
+
+# Git
+storage:
+  location: /var/git/myrepo
+  remoteurl: http://gitlab-local:8000/root/myrepo.git
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  metrics:
+    tags:
+      app: ${spring.application.name}
+      application: ${spring.application.name}
+      system: springboot-sample

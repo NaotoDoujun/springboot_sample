@@ -16,7 +16,6 @@ $(function(){
         let data_stringify = JSON.stringify(data);
         let data_json = JSON.parse(data_stringify);
         $.each(data_json, function(index, value) {
-            console.log(value);
             $('.scene').append('<div>'+ value.id + ':' + value.name + '</div>');
         })
     });
@@ -30,10 +29,7 @@ $(function(){
             cache: false,
             contentType: false,
             processData: false,
-            method: 'POST',
-            success: function(data){
-                console.log(data);
-            }
+            method: 'POST'
         });
     });
     
@@ -46,10 +42,7 @@ $(function(){
             cache: false,
             contentType: false,
             processData: false,
-            method: 'POST',
-            success: function(data){
-                console.log(data);
-            }
+            method: 'POST'
         });
     });
 });

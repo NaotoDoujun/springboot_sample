@@ -42,15 +42,15 @@ public class GitStorageService implements StorageService {
     private final int lockTimeoutSeconds;
 
 	private UsernamePasswordCredentialsProvider user;
-    private Git git;
+  private Git git;
 
 	@Autowired
 	public GitStorageService(StorageProperties properties) {
-        if(properties.getLocation().trim().length() == 0){
-            throw new StorageException("File upload location can not be Empty."); 
+    if(properties.getLocation().trim().length() == 0){
+      throw new StorageException("File upload location can not be Empty."); 
 		}
 		if(properties.getRemoteUrl().trim().length() == 0){
-            throw new StorageException("Push repository url can not be Empty."); 
+      throw new StorageException("Push repository url can not be Empty."); 
 		}
 		this.rootLocation = Paths.get(properties.getLocation());
 		this.remoteUrl = properties.getRemoteUrl();
@@ -66,12 +66,12 @@ public class GitStorageService implements StorageService {
 				throw new StorageException("Failed to store empty file.");
 			}
 			Path destinationFile = this.rootLocation.resolve(
-					Paths.get(file.getOriginalFilename()))
+				Paths.get(file.getOriginalFilename()))
 					.normalize().toAbsolutePath();
 			if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
 				// This is a security check
 				throw new StorageException(
-						"Cannot store file outside current directory.");
+		      "Cannot store file outside current directory.");
 			}
 			try (InputStream inputStream = file.getInputStream()) {
 				Files.copy(inputStream, destinationFile,
@@ -124,9 +124,7 @@ public class GitStorageService implements StorageService {
 				return resource;
 			}
 			else {
-				throw new StorageFileNotFoundException(
-						"Could not read file: " + filename);
-
+				throw new StorageFileNotFoundException("Could not read file: " + filename);
 			}
 		}
 		catch (MalformedURLException e) {
@@ -190,50 +188,50 @@ public class GitStorageService implements StorageService {
 	}
 
 	private boolean checkRemoteExist() {
-        final LsRemoteCommand lsremoteCommand = Git.lsRemoteRepository();
-        try {
-            lsremoteCommand.setRemote(remoteUrl).setCredentialsProvider(user).call();
-        } catch (GitAPIException e) {
-            return false;
-        }
-        return true;
+    final LsRemoteCommand lsremoteCommand = Git.lsRemoteRepository();
+    try {
+      lsremoteCommand.setRemote(remoteUrl).setCredentialsProvider(user).call();
+    } catch (GitAPIException e) {
+      return false;
     }
+    return true;
+  }
 
-    private Git pullRepository() throws GitAPIException, IOException {
-        final Git git = Git.open(rootLocation.toFile());
-        git.pull().setRebase(true)
-                .setCredentialsProvider(user)
-                .call();
-        return git;
-    }
+  private Git pullRepository() throws GitAPIException, IOException {
+    final Git git = Git.open(rootLocation.toFile());
+    git.pull().setRebase(true)
+        .setCredentialsProvider(user)
+        .call();
+    return git;
+  }
 
-    private Git cloneRepository() throws GitAPIException {
-        final CloneCommand cloneCommand = Git.cloneRepository()
-                .setURI(remoteUrl)
-                .setDirectory(rootLocation.toFile())
-                .setCredentialsProvider(user);
-        return cloneCommand.call();
-    }
+  private Git cloneRepository() throws GitAPIException {
+    final CloneCommand cloneCommand = Git.cloneRepository()
+      .setURI(remoteUrl)
+      .setDirectory(rootLocation.toFile())
+      .setCredentialsProvider(user);
+    return cloneCommand.call();
+  }
 
 	private  <T> T synchronizedOperation(final Callable<T> callable) {
+    try {
+      if (directoryLock.tryLock(lockTimeoutSeconds, TimeUnit.SECONDS)) {
         try {
-            if (directoryLock.tryLock(lockTimeoutSeconds, TimeUnit.SECONDS)) {
-                try {
-                    return callable.call();
-                } catch (final Exception e) {
-                    throw new RuntimeException(e);
-                } finally {
-                    directoryLock.unlock();
-                }
-            } else {
-                throw new RuntimeException(
-                                "Attempt to acquire lock on working directory was timeout: "
-                                 + lockTimeoutSeconds
-                                 + "s. Maybe due to dead lock");
-            }
-        } catch (final InterruptedException e) {
-            LOGGER.error("Thread interrupted. ", e);
+          return callable.call();
+        } catch (final Exception e) {
+          throw new RuntimeException(e);
+        } finally {
+          directoryLock.unlock();
         }
-        return null;
+      } else {
+        throw new RuntimeException(
+          "Attempt to acquire lock on working directory was timeout: "
+            + lockTimeoutSeconds
+            + "s. Maybe due to dead lock");
+      }
+    } catch (final InterruptedException e) {
+      LOGGER.error("Thread interrupted. ", e);
     }
+    return null;
+  }
 }

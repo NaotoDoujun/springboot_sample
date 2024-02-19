@@ -27,4 +27,5 @@ RUN chown 1001 /work \
 COPY --chown=1001:root target/ui-frontend /work/application
 
 USER 1001
+EXPOSE 8080
 ENTRYPOINT ["sh", "-c", "/work/application -Dserver.address=0.0.0.0"]

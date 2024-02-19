@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class FruitController {
     
-@Autowired
+  @Autowired
   FruitRepository fruitRepository;
 
   @GetMapping("/fruits")

@@ -13,6 +13,41 @@ services:
       - 5432:5432
     restart: unless-stopped
 
+  gitlab:
+    image: gitlab/gitlab-ce:16.8.2-ce.0
+    container_name: gitlab-for-spring
+    privileged: true
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://localhost:8000'
+        registry_external_url 'http://localhost:5050'
+        gitlab_rails['registry_enabled'] = true
+        gitlab_rails['time_zone'] = "Asia/Tokyo"
+        gitlab_rails['initial_root_password'] = "P@ssw0rd"
+        nginx['listen_port'] = 8000
+        puma['worker_processes'] = 1
+        postgresql['shared_buffers'] = "1024MB"
+        mattermost['enable'] = false
+        prometheus['enable'] = false
+        alertmanager['enable'] = false
+        node_exporter['enable'] = false
+        redis_exporter['enable'] = false
+        postgres_exporter['enable'] = false
+        gitlab_exporter['enable'] = false
+        grafana['enable'] = false
+    volumes:
+      - gitlab_config:/etc/gitlab
+      - gitlab_logs:/var/log/gitlab
+      - gitlab_data:/var/opt/gitlab
+    logging:
+      options:
+        max-size: "4M"
+        max-file: "14"
+    ports:
+      - 8000:8000
+      - 5050:5050
+    restart: unless-stopped
+
   rest-db:
     container_name: spring-rest-db
     hostname: rest-db
@@ -82,4 +117,10 @@ volumes:
   restgit_volume:
     driver: local
   postgres_volume:
+    driver: local
+  gitlab_config:
+    driver: local
+  gitlab_logs:
+    driver: local
+  gitlab_data:
     driver: local

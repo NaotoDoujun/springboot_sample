@@ -29,6 +29,16 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <script th:inline="javascript">
 		  window.API_BASE_URL = /*[[${apiBaseUrl}]]*/"apiBaseUrl";
     </script>
+    <h3>Upload Form</h3>
+    <form id="upform" enctype="multipart/form-data">
+        <input type="file" name="files" size="50" />
+        <button id="upButton" type="button">Upload It</button>
+    </form>
+    <h3>Commit</h3>
+    <form id="commitform">
+        <input type="text" name="commit" />
+        <button id="commitButton" type="button">Commit</button>
+    </form>
     <script th:src="@{/main.js}"></script>
 </body>
 </html>

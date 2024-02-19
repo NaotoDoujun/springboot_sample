@@ -21,38 +21,38 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfiguration {
     
-    @Bean
-    SecurityFilterChain configure(HttpSecurity http) throws Exception {
+  @Bean
+  SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
-        OpenSaml4AuthenticationProvider authenticationProvider = new OpenSaml4AuthenticationProvider();
-        authenticationProvider.setResponseAuthenticationConverter(groupsConverter());
+    OpenSaml4AuthenticationProvider authenticationProvider = new OpenSaml4AuthenticationProvider();
+    authenticationProvider.setResponseAuthenticationConverter(groupsConverter());
 
-        http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/actuator/**").permitAll()
-                .anyRequest().authenticated())
-            .saml2Login(saml2 -> saml2
-                .authenticationManager(new ProviderManager(authenticationProvider)))
-            .saml2Logout(Customizer.withDefaults());
+    http.authorizeHttpRequests(authorize -> authorize
+        .requestMatchers("/actuator/**").permitAll()
+        .anyRequest().authenticated())
+      .saml2Login(saml2 -> saml2
+        .authenticationManager(new ProviderManager(authenticationProvider)))
+      .saml2Logout(Customizer.withDefaults());
 
-        return http.build();
-    }
+    return http.build();
+  }
 
-    private Converter<OpenSaml4AuthenticationProvider.ResponseToken, Saml2Authentication> groupsConverter() {
+  private Converter<OpenSaml4AuthenticationProvider.ResponseToken, Saml2Authentication> groupsConverter() {
 
-        Converter<ResponseToken, Saml2Authentication> delegate =
-            OpenSaml4AuthenticationProvider.createDefaultResponseAuthenticationConverter();
+    Converter<ResponseToken, Saml2Authentication> delegate =
+      OpenSaml4AuthenticationProvider.createDefaultResponseAuthenticationConverter();
 
-        return (responseToken) -> {
-            Saml2Authentication authentication = delegate.convert(responseToken);
-            Saml2AuthenticatedPrincipal principal = (Saml2AuthenticatedPrincipal) authentication.getPrincipal();
-            List<String> groups = principal.getAttribute("groups");
-            Set<GrantedAuthority> authorities = new HashSet<>();
-            if (groups != null) {
-                groups.stream().map(SimpleGrantedAuthority::new).forEach(authorities::add);
-            } else {
-                authorities.addAll(authentication.getAuthorities());
-            }
-            return new Saml2Authentication(principal, authentication.getSaml2Response(), authorities);
-        };
-    }
+    return (responseToken) -> {
+      Saml2Authentication authentication = delegate.convert(responseToken);
+      Saml2AuthenticatedPrincipal principal = (Saml2AuthenticatedPrincipal) authentication.getPrincipal();
+      List<String> groups = principal.getAttribute("groups");
+      Set<GrantedAuthority> authorities = new HashSet<>();
+      if (groups != null) {
+          groups.stream().map(SimpleGrantedAuthority::new).forEach(authorities::add);
+      } else {
+          authorities.addAll(authentication.getAuthorities());
+      }
+      return new Saml2Authentication(principal, authentication.getSaml2Response(), authorities);
+    };
+  }
 }

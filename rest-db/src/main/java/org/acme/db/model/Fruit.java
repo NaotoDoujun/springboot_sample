@@ -6,19 +6,19 @@ import jakarta.persistence.*;
 @Table(name = "fruits")
 public class Fruit {
     
-    @Id
+  @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-    @Column(name = "name")
-    private String name;
+  @Column(name = "name")
+  private String name;
 
-    public Fruit() {
-    }
+  public Fruit() {
+  }
 
-    public Fruit(String name) {
-        this.name = name;
-    }
+  public Fruit(String name) {
+      this.name = name;
+  }
 
     public long getId() {
 		return id;
@@ -32,7 +32,7 @@ public class Fruit {
 		this.name = name;
 	}
 
-    @Override
+  @Override
 	public String toString() {
 		return "Fruit [id=" + id + ", name=" + name + "]";
 	}

@@ -8,15 +8,15 @@
 #
 # Then, you can run the app as follows:
 #
-# $ target/rest-db
+# $ target/rest-backend
 #
 # So, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.native -t springboot/rest-db .
+# docker build -f src/main/docker/Dockerfile.native -t springboot/rest-backend .
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 8080:8080 springboot/rest-db
+# docker run -i --rm -p 8080:8080 springboot/rest-backend
 #
 ###
 FROM oraclelinux:7-slim

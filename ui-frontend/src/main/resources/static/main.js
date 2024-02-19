@@ -8,7 +8,7 @@ $(function(){
     }
 
     $.ajax({
-        url: basePath + '/fruits',
+        url: `${basePath}/api/fruits`,
         headers: defaultHeaders,
         dataType: "json",
     }).then(function(data) {
@@ -19,5 +19,37 @@ $(function(){
             console.log(value);
             $('.scene').append('<div>'+ value.id + ':' + value.name + '</div>');
         })
+    });
+
+    $("#upButton").on('click', function () {
+        console.log("upButton clicked.");
+        let data = new FormData($("#upform").get(0));
+        $.ajax({
+            url:`${basePath}/api/git`,
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            method: 'POST',
+            success: function(data){
+                console.log(data);
+            }
+        });
+    });
+    
+    $("#commitButton").on('click', function () {
+        console.log("commitButton clicked.");
+        let data = new FormData($("#commitform").get(0));
+        $.ajax({
+            url:`${basePath}/api/git/commit`,
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            method: 'POST',
+            success: function(data){
+                console.log(data);
+            }
+        });
     });
 });

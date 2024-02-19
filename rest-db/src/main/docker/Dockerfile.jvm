@@ -11,11 +11,13 @@
 #
 # Then run the container using:
 #
-# docker run -i --rm -p 8081:8081 springboot/rest-db-jvm
+# docker run -i --rm -p 8080:8080 springboot/rest-db-jvm
 #
 ###
 FROM openjdk:17-jdk-slim
 
 COPY target/*.jar /deployments/application.jar
+
+EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "-Dserver.address=0.0.0.0", "/deployments/application.jar"]
 

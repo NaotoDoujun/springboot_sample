@@ -114,9 +114,10 @@ services:
     container_name: spring-ui-frontend-jvm
     ports:
       - 8080:8080
-    restart: "no"
     environment:
+      SPRING_PROFILES_ACTIVE: production
       API_BASE_URL: http://localhost:8083
+    restart: "no"
 
 volumes:
   gitlab-local_config:

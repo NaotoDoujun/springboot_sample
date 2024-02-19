@@ -1,7 +1,7 @@
 global:
   scrape_interval: 10s
   external_labels:
-    system: quarkus-sample
+    system: springboot-sample
 
 scrape_configs:
   - job_name: prometheus
@@ -9,31 +9,41 @@ scrape_configs:
       - targets: ['localhost:9090']
 
   - job_name: rest-db
-    metrics_path: /q/metrics
+    metrics_path: /actuator/prometheus
     honor_labels: true
     static_configs:
       - targets: ['rest-db-jvm:8081']
         labels:
           app: rest-db
           application: db-service
-          system: quarkus-sample
+          system: springboot-sample
 
-  - job_name: rest-backend
-    metrics_path: /q/metrics
-    honor_labels: true
-    static_configs:
-      - targets: ['rest-backend-jvm:8082']
-        labels:
-          app: rest-backend
-          application: backend-service
-          system: quarkus-sample
-
-  - job_name: 'ui-springboot'
+  - job_name: rest-git
     metrics_path: /actuator/prometheus
     honor_labels: true
     static_configs:
-      - targets: ['ui-springboot-jvm:8080']
+      - targets: ['rest-git-jvm:8082']
         labels:
-          app: ui-springboot
-          application: ui-springboot
-          system: quarkus-sample
+          app: rest-git
+          application: git-service
+          system: springboot-sample
+
+  - job_name: rest-backend
+    metrics_path: /actuator/prometheus
+    honor_labels: true
+    static_configs:
+      - targets: ['rest-backend-jvm:8083']
+        labels:
+          app: rest-backend
+          application: backend
+          system: springboot-sample
+
+  - job_name: 'ui-frontend'
+    metrics_path: /actuator/prometheus
+    honor_labels: true
+    static_configs:
+      - targets: ['ui-frontend-jvm:8080']
+        labels:
+          app: ui-frontend
+          application: ui-frontend
+          system: springboot-sample

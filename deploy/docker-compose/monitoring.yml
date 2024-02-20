@@ -70,6 +70,21 @@ services:
     environment:
       - COLLECTOR_OTLP_ENABLED=true
 
+  rest-db-jvm:
+    environment:
+      MANAGEMENT_TRACING_SAMPLING_PROBABILITY: 1.0
+      MANAGEMENT_OTLP_TRACING_ENDPOINT: http://jaeger:4318/v1/traces
+
+  rest-git-jvm:
+    environment:
+      MANAGEMENT_TRACING_SAMPLING_PROBABILITY: 1.0
+      MANAGEMENT_OTLP_TRACING_ENDPOINT: http://jaeger:4318/v1/traces
+
+  rest-backend-jvm:
+    environment:
+      MANAGEMENT_TRACING_SAMPLING_PROBABILITY: 1.0
+      MANAGEMENT_OTLP_TRACING_ENDPOINT: http://jaeger:4318/v1/traces
+
 volumes:
   mongodb_volume:
     driver: local

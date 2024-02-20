@@ -68,6 +68,8 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db-local:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+      MANAGEMENT_TRACING_SAMPLING_PROBABILITY: 1.0
+      MANAGEMENT_OTLP_TRACING_ENDPOINT: http://jaeger:4318/v1/traces
     restart: "no"
     networks:
       default:
@@ -85,6 +87,8 @@ services:
       SPRING_PROFILES_ACTIVE: production
       STORAGE_LOCATION: /var/git/myrepo
       STORAGE_REMOTEURL: http://gitlab-local:8000/root/myrepo.git
+      MANAGEMENT_TRACING_SAMPLING_PROBABILITY: 1.0
+      MANAGEMENT_OTLP_TRACING_ENDPOINT: http://jaeger:4318/v1/traces
     restart: "no"
     networks:
       default:
@@ -103,6 +107,8 @@ services:
       SPRING_PROFILES_ACTIVE: production
       REST_DB_ENDPOINT: http://rest-db-jvm:8081
       REST_GIT_ENDPOINT: http://rest-git-jvm:8082
+      MANAGEMENT_TRACING_SAMPLING_PROBABILITY: 1.0
+      MANAGEMENT_OTLP_TRACING_ENDPOINT: http://jaeger:4318/v1/traces
     restart: "no"
     networks:
       default:

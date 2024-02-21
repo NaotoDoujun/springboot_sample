@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="data:,">
+    <script th:inline="javascript">
+        window.API_BASE_URL = /*[[${apiBaseUrl}]]*/"apiBaseUrl";
+        window.principal.name = /*[[${name}]]*/"name";
+        window.principal.email = /*[[${emailAddress}]]*/"emailAddress";
+    </script>
+    <title>Spring Boot and SAML</title>
+    <script defer="defer" src="/js/main.d51e8878.js"></script>
+    <link href="/css/main.f855e6bc.css" rel="stylesheet">
+</head>
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+</body>
+</html>

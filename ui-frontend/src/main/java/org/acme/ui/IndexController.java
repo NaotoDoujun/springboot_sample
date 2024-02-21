@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 
 @Controller
-public class HomeController {
+public class IndexController {
 
   @Autowired
   private Environment env;
 
   @RequestMapping("/")
-  public String home(@AuthenticationPrincipal Saml2AuthenticatedPrincipal principal, Model model){
+  public String index(@AuthenticationPrincipal Saml2AuthenticatedPrincipal principal, Model model){
     model.addAttribute("name", principal.getName());
     String email = principal.getFirstAttribute("email");
     // if email is not preset, try Auth0 attribute name
@@ -23,9 +23,7 @@ public class HomeController {
       email = principal.getFirstAttribute("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
     }
     model.addAttribute("emailAddress", email);
-    model.addAttribute("userAttributes", principal.getAttributes());
-
     model.addAttribute( "apiBaseUrl", env.getProperty("api.base.url"));
-    return "home.html";
+    return "index.html";
   }
 }

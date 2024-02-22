@@ -20,14 +20,12 @@ const darkTheme = createTheme({
 
 function App() {
   const isDark = useMediaQuery('(prefers-color-scheme: dark)');
-  const [isOpenDrawer, setIsOpenDrawer] = React.useState(false);
+  const [fruits, setFruits] = React.useState([]);
+  const [files, setFiles] = React.useState([]);
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <CssBaseline />
-      <AppSettingsContext.Provider value={{
-        isOpenDrawer,
-        setIsOpenDrawer
-      }}>
+      <AppSettingsContext.Provider value={{ fruits, setFruits, files, setFiles }}>
         <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />}>

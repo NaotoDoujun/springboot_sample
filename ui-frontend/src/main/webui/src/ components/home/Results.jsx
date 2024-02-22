@@ -1,11 +1,10 @@
 import * as React from 'react';
 import axios from 'axios';
 import { Box, Paper, Grid, Typography } from '@mui/material';
+import { AppSettingsContext } from '../common';
 
 function Results() {
-  const [fruits, setFruits] = React.useState([]);
-  const [files, setFiles] = React.useState([]);
-
+  const { fruits, setFruits, files, setFiles } = React.useContext(AppSettingsContext);
   React.useEffect(() => {
     
     axios.get(`${window.API_BASE_URL}/api/fruits`)
@@ -24,7 +23,7 @@ function Results() {
         console.log('err:', err);
       });
 
-    }, []);
+    }, [setFruits, setFiles]);
 
   return (
       <Box sx={{

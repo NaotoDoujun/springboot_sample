@@ -1,7 +1,6 @@
 import { AppBar, Toolbar, Box, Button, Grid, Typography } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { FileDrop } from './FileDrop';
-import axios from 'axios';
 
 function Home() {
 

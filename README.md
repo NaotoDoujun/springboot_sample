@@ -20,10 +20,8 @@ After build each images, run below command at project root directory.
 ## Monitoring
 - [Prometheus](https://prometheus.io/)
     - Polls metrics from all the services within the system.
-- [OpenTelemetry Collector](https://opentelemetry.io/docs/collector)
-    - All services export distributed trace information to the collector.
 - [Jaeger](https://www.jaegertracing.io)
-    - The collector exports trace information into Jaeger.
+    - Jaeger is an open-source distributed tracing system.
 - [GrayLog](https://graylog.org/)
     - Log management platform for collecting, indexing, and analyzing both structured and unstructured data from almost any source.
 

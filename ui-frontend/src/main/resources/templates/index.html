@@ -6,12 +6,14 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="data:,">
     <script th:inline="javascript">
-        window.API_BASE_URL = /*[[${apiBaseUrl}]]*/"apiBaseUrl";
-        window.principal.name = /*[[${name}]]*/"name";
-        window.principal.email = /*[[${emailAddress}]]*/"emailAddress";
+        window.API_BASE_URL=/*[[${apiBaseUrl}]]*/"apiBaseUrl";
+        window.principal={
+            userName: /*[[${name}]]*/"name",
+            emailAddress: /*[[${emailAddress}]]*/"emailAddress"
+        };
     </script>
     <title>Spring Boot and SAML</title>
-    <script defer="defer" src="/js/main.d51e8878.js"></script>
+    <script defer="defer" src="/js/main.0c04f1ad.js"></script>
     <link href="/css/main.f855e6bc.css" rel="stylesheet">
 </head>
 <body>

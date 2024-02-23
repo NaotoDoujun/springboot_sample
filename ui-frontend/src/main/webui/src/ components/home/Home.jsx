@@ -1,6 +1,7 @@
 import { AppBar, Toolbar, Box, Button, Grid, Typography } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { FileDrop } from './FileDrop';
+import { Commit } from './Commit';
 
 function Home() {
 
@@ -15,15 +16,20 @@ function Home() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 UI-Frontend Sample
             </Typography>
-            <Button color="inherit" onClick={handleLogout}>Logout</Button>
+            <Button variant="contained" onClick={handleLogout}>Logout</Button>
           </Toolbar>
         </AppBar>
         <Grid container spacing={2} sx={{ p: 2 }}>
           <Grid item>
             <Outlet />
           </Grid>
+          <Grid item>
+            <FileDrop />
+          </Grid>
+          <Grid item>
+            <Commit />
+          </Grid>
         </Grid>
-        <FileDrop />
       </Box>
   );
 };

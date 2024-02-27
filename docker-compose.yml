@@ -111,6 +111,7 @@ services:
         - WORK_DIR=${WORK_DIR}
     volumes:
       - .:/app:cached
+      - /app/ui-frontend/src/main/webui/node_modules
     restart: "no"
 
 volumes:

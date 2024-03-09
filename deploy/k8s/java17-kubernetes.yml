@@ -1,0 +1,206 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    app: db
+    application: db-service
+    system: springboot-sample
+  name: db-config
+data:
+  POSTGRESQL_DATABASE: cG9zdGdyZXM=
+  POSTGRESQL_USERNAME: cG9zdGdyZXM=
+  POSTGRESQL_PASSWORD: cG9zdGdyZXM=
+type: Opaque
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    app: rest-db
+    application: db-service
+    system: springboot-sample
+  name: rest-db-config-creds
+data:
+  spring.datasource.username: cG9zdGdyZXM=
+  spring.datasource.password: cG9zdGdyZXM=
+type: Opaque
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: db
+    application: db-service
+    system: springboot-sample
+  name: db-init
+data:
+  get-data.sh: |-
+    #!/bin/bash
+
+    curl https://github.com/NaotoDoujun/springboot_sample/blob/main/rest-db/src/main/resources/data.sql --output /docker-entrypoint-initdb.d/1-init-tables.sql
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: rest-db
+    application: db-service
+    system: springboot-sample
+  name: rest-db-config
+data:
+  spring.profiles.active: production
+  spring.datasource.url: jdbc:postgresql://db:5432/postgres
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: db
+    application: db-service
+    system: springboot-sample
+  name: db
+spec:
+  ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    name: db
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rest-db
+    application: db-service
+    system: springboot-sample
+  name: rest-db
+spec:
+  ports:
+    - name: http
+      port: 8081
+      protocol: TCP
+      targetPort: 8081
+      nodePort: 30081
+  selector:
+    app: rest-db
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: db
+    application: db-service
+    system: springboot-sample
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: db
+  template:
+    metadata:
+      labels:
+        application: db-service
+        name: db
+    spec:
+      containers:
+        - envFrom:
+            - secretRef:
+                name: db-config
+          image: bitnami/postgresql:14
+          name: db
+          ports:
+            - containerPort: 5432
+          resources:
+            limits:
+              memory: 128Mi
+            requests:
+              memory: 32Mi
+          volumeMounts:
+            - mountPath: /bitnami/postgresql
+              name: db-data
+            - mountPath: /docker-entrypoint-initdb.d
+              name: db-init-data
+      initContainers:
+        - command:
+            - sh
+            - get-data.sh
+          image: registry.access.redhat.com/ubi8-minimal:8.6
+          name: get-data
+          volumeMounts:
+            - mountPath: /docker-entrypoint-preinitdb.d
+              name: db-init
+            - mountPath: /docker-entrypoint-initdb.d
+              name: db-init-data
+          workingDir: /docker-entrypoint-preinitdb.d
+      volumes:
+        - emptyDir: {}
+          name: db-data
+        - emptyDir: {}
+          name: db-init-data
+        - configMap:
+            name: db-init
+          name: db-init
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: rest-db
+    application: db-service
+    system: springboot-sample
+  name: rest-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rest-db
+  template:
+    metadata:
+      labels:
+        app: rest-db
+        application: db-service
+        system: springboot-sample
+    spec:
+      containers:
+        - env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          envFrom:
+            - configMapRef:
+                name: rest-db-config
+            - secretRef:
+                name: rest-db-config-creds
+          image: springboot/rest-db-jvm:latest
+          imagePullPolicy: IfNotPresent
+          name: rest-db
+          ports:
+            - containerPort: 8081
+              name: http
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 1
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 2
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1

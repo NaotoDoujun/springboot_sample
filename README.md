@@ -30,3 +30,9 @@ After build each images, run below command at project root directory.
 | Prometheus | http://localhost:9090 |
 | Jaeger | http://localhost:16686 |
 | GrayLog | http://localhost:9000 |
+
+## Deploying to Kubernetes
+I'll try Ingress-controller eventually, if I have time. But it doesn't make much sense to try it on Docker desktop for Mac...
+| Description | Image Tag | Kubernetes Descriptor |
+| :------------: | :---------------: | :-----------: |
+| JVM Java 17 | `java17-latest` | [`java17-kubernetes.yml`](deploy/k8s/java17-kubernetes.yml) | 

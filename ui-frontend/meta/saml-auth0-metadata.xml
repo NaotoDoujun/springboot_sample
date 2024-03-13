@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://localhost:8080/saml2/service-provider-metadata/auth0">
+    <md:SPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>MIIDazCCAlOgAwIBAgIURkC1GNenS945KWcQnvqrZ+F4ImYwDQYJKoZIhvcNAQELBQAwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgMClNvbWUtU3RhdGUxITAfBgNVBAoMGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZDAeFw0yNDAxMjQxMTA5MzNaFw0yNTAxMjMxMTA5MzNaMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCwuuamMRtfASQM1xOixc4KC2yW5kqLaZfehWvyDr3lskZ94f2vCAv9AsgCcRBNTT0U3sntWp7V5Lb6/sF2F0b0WIFE+CdprkDZ1mffq5xHzzdqh1kSaUzA+J1TeAsRPZnAE2B/f7NvWbY+UnQiFQkboNU61rXOyNlTaT4XNXyHDOPBNfh05V5dlfWx7+rW0RJjGd4HSFWkOEWYRy23G7eKNbGYxjBfYHqvd9qEpM4lFutfDmMAmhdRwrxwxvAolZyV9ALZfEjr/75PKZfA7YAiqVNO4JosKhSThonxrzvgOJL+y6Vvs6XVicFIzH4/5RSOgLUWumoOv4uIilizIJqBAgMBAAGjUzBRMB0GA1UdDgQWBBSaDKF3V7//NiCUC7klkFqGl6vc3TAfBgNVHSMEGDAWgBSaDKF3V7//NiCUC7klkFqGl6vc3TAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQBZsz12/A1BGD2tdRmxh1H/23VXdtZW7ohA0Yb5Tdae4m/MS5g9cFvPmFdV28Y2UyZApKJyULOzmuEbykdrARzuahuoBkqRHKX3mfe/8lR/blG/4EAwubWG6g7LShWS99LyStGfSU2OKrC6cdlIWf/K6IEmvwXLqnC/Cunyzh/xCkqwzbgj3sE8JkwezwqZ9vbCWkzm0IBCUk7DtT2STggfZp4JK01lSTm/5sjL5fqysSHaREduDv1ylwrXyfHgJtr29G5lzA8P3TVM3zzsTYmxT/KE4ojf4QRsacEnhFAHtCMGDImvCSKk01eVSRxuZSKOkE71gmb8kx3BgXjC2yd0</ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="http://localhost:8080/login/saml2/sso/auth0" index="1"/>
+    </md:SPSSODescriptor>
+</md:EntityDescriptor>

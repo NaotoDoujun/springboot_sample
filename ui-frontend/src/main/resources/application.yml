@@ -36,3 +36,19 @@ management:
       app: ${spring.application.name}
       application: ${spring.application.name}
       system: springboot-sample
+
+private:
+  key: classpath:credentials/local.key
+public:
+  certificate: classpath:credentials/local.crt
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.saml2: TRACE
+    org.springframework.security.authentication: TRACE
+    org.springframework.security.authorization: TRACE
+    org.springframework.security.web.csrf.CsrfFilter: DEBUG
+    org.opensaml: INFO
+    org.opensaml.saml: TRACE
+

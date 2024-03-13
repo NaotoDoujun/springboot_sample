@@ -4,7 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import './App.css';
-import { AppSettingsContext, Logout, Home, Results } from './ components';
+import { AppSettingsContext, Home, Results } from './ components';
 
 const lightTheme = createTheme({
   palette: {
@@ -31,7 +31,6 @@ function App() {
           <Route path="/" element={<Home />}>
             <Route index element={<Results />} />
           </Route>
-          <Route path="/logout" element={<Logout />} />
         </Routes>
         </BrowserRouter>
       </AppSettingsContext.Provider>

@@ -47,24 +47,6 @@
 			<artifactId>logback-gelf</artifactId>
 			<version>5.0.1</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.opensaml/opensaml-core -->	
-		<dependency>
-			<groupId>org.opensaml</groupId>
-			<artifactId>opensaml-core</artifactId>
-			<version>4.3.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.opensaml/opensaml-saml-api -->	
-		<dependency>
-			<groupId>org.opensaml</groupId>
-			<artifactId>opensaml-saml-api</artifactId>
-			<version>4.3.0</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.opensaml/opensaml-saml-impl -->	
-		<dependency>
-			<groupId>org.opensaml</groupId>
-			<artifactId>opensaml-saml-impl</artifactId>
-			<version>4.3.0</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-saml2-service-provider -->	
 		<dependency>	
 			<groupId>org.springframework.security</groupId>
